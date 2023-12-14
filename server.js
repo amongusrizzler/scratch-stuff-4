@@ -1,9 +1,16 @@
-import { readFile } from 'fs';
-import { createServer } from 'http';
+const readFile = require('fs').readFile;
+const createServer = require('http').createServer;
+
+const port = 8000;
 
 createServer((req, res) => {
   readFile(__dirname + /public/ + req.url, (err, data) => {
-    if (err) {
+    if (req.url == "/") {
+        res.writeHead(200, { 'Content-Type': 'text/html' });
+        readFile(__dirname + "/public/index.html", (err, data) => {
+            res.end(data);
+          });
+    } else if (err) {
       res.writeHead(404, { 'Content-Type': 'text/html' });
       readFile(__dirname + "/public/404.html", (err, data) => {
         res.end(data);
@@ -13,4 +20,6 @@ createServer((req, res) => {
       res.end(data);
     }
   });
-}).listen(8000);
+}).listen(port);
+
+console.log(`Listening on port ${port}`);
