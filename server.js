@@ -1,27 +1,16 @@
-const http = require("http");
-const fs = require('fs').promises;
+import { readFile } from 'fs';
+import { createServer } from 'http';
 
-const host = 'localhost';
-const port = 8000;
-
-const index = fs.readFile(__dirname + "/public/index.html");
-
-const requestListener = function (req, res) {
-    fs.readFile(__dirname + "/public" + req.url)
-    .then(contents => {
-        res.setHeader("Content-Type", "text/html");
-        res.writeHead(200);
-        res.end(contents);
-    })
-    .catch(err => {
-        res.setHeader("Content-Type", "text/html");
-        res.writeHead(200);
-        res.end(index);
-        return;
-    });
-};
-
-const server = http.createServer(requestListener);
-server.listen(port, host, () => {
-    console.log(`Server is running on http://${host}:${port}`);
-});
+createServer((req, res) => {
+  readFile(__dirname + /public/ + req.url, (err, data) => {
+    if (err) {
+      res.writeHead(404, { 'Content-Type': 'text/html' });
+      readFile(__dirname + "/public/404.html", (err, data) => {
+        res.end(data);
+      });
+    } else {
+      res.writeHead(200, { 'Content-Type': 'text/html' });
+      res.end(data);
+    }
+  });
+}).listen(8000);
