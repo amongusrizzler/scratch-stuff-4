@@ -35,13 +35,7 @@ a  {
   font-size: 30px;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
-.Aboutmenu {
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #4597a5;
-    position: fixed;
-    top: 0;
-    width: 100%;
+.button-container {
+  display: flex;
 }
   
